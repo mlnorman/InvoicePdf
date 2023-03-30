@@ -1,31 +1,37 @@
-
-   BEGIN TRY
+ BEGIN TRY
    	BEGIN TRANSACTION
    		
-		DECLARE @CreatedDate DATETIME = DATEADD(DAY, -20, CURRENT_TIMESTAMP)
+		DECLARE @CreatedDate DATETIME = DATEADD(DAY, -20, CURRENT_TIMESTAMP);
+		INSERT INTO Invoices.dbo.Invoices(CreatedDate, InvoicePeriodStart, InvoicePeriodEnd, DueDate, Description, DocumentExists)
+		   VALUES ( @CreatedDate, '2023-02-01', '2023-02-19', '2023-03-01', 'Walmart paper sale.', 0);
 
-		INSERT INTO InvoiceDocumentsDb.dbo.InvoiceDocuments(CreatedDate, pdfDocument) 
-		   SELECT @CreatedDate, BulkColumn
-		   FROM OPENROWSET(BULK N'C:\Users\...\PDFProject\Data\invoice_sample_1.pdf', SINGLE_BLOB) AS VARBINARY
+		INSERT INTO InvoiceDocuments.dbo.InvoiceDocuments(InvoiceId, CreatedDate, pdfDocument) 
+		   SELECT 1, @CreatedDate, BulkColumn
+		   FROM OPENROWSET(BULK N'C:\Users\...\PDFProject\Data\invoice_sample_1.pdf', SINGLE_BLOB) AS VARBINARY;
    
-		INSERT INTO InvoicesDb.dbo.Invoices(CreatedDate, InvoicePeriodStart, InvoicePeriodEnd, DueDate, Description)
-		   VALUES ( @CreatedDate, '2023-02-01', '2023-02-19', '2023-03-01', 'Walmart paper sale.')
+	
+		SET @CreatedDate  = DATEADD(Month, -10, CURRENT_TIMESTAMP);
+		INSERT INTO Invoices.dbo.Invoices(CreatedDate, InvoicePeriodStart, InvoicePeriodEnd, DueDate, Description, DocumentExists)
+		   VALUES ( @CreatedDate, '2022-04-19', '2022-04-22', '2022-05-07', 'Invoice for taking scrap removal.', 0);
 
-		SET @CreatedDate  = DATEADD(Month, -10, CURRENT_TIMESTAMP)
-		INSERT INTO InvoiceDocumentsDb.dbo.InvoiceDocuments(CreatedDate, pdfDocument) 
-		   SELECT @CreatedDate, BulkColumn
-		   FROM OPENROWSET(BULK N'C:\Users\...\PDFProject\Data\invoice_sample_2.pdf', SINGLE_BLOB) AS VARBINARY
+		INSERT INTO InvoiceDocuments.dbo.InvoiceDocuments(InvoiceId, CreatedDate, pdfDocument) 
+		   SELECT 2, @CreatedDate, BulkColumn
+		   FROM OPENROWSET(BULK N'C:\Users\...\PDFProject\Data\invoice_sample_2.pdf', SINGLE_BLOB) AS VARBINARY;
    
-		INSERT INTO InvoicesDb.dbo.Invoices(CreatedDate, InvoicePeriodStart, InvoicePeriodEnd, DueDate, Description)
-		   VALUES ( @CreatedDate, '2022-04-19', '2022-04-22', '2022-05-07', 'Invoice for taking scrap removal.')
+		
+		SET @CreatedDate  = DATEADD(DAY, 15,DATEADD(year, -2, CURRENT_TIMESTAMP));
 
-		SET @CreatedDate  = DATEADD(DAY, 15,DATEADD(year, -2, CURRENT_TIMESTAMP))
-		INSERT INTO InvoiceDocumentsDb.dbo.InvoiceDocuments(CreatedDate, pdfDocument) 
-		   SELECT @createdDate, BulkColumn
-		   FROM OPENROWSET(BULK N'C:\Users\...\PDFProject\Data\invoice_sample_3.pdf', SINGLE_BLOB) AS VARBINARY
+		INSERT INTO Invoices.dbo.Invoices(CreatedDate, InvoicePeriodStart, InvoicePeriodEnd, DueDate, Description, DocumentExists)
+		   VALUES ( @CreatedDate, '2021-04-01', '2021-04-13', '2021-04-25', 'Invoice for taking in paper rolls.', 0);
 
-		INSERT INTO InvoicesDb.dbo.Invoices(CreatedDate, InvoicePeriodStart, InvoicePeriodEnd, DueDate, Description)
-		   VALUES ( @CreatedDate, '2021-04-01', '2021-04-13', '2021-04-25', 'Invoice for taking in paper rolls.')
+		INSERT INTO InvoiceDocuments.dbo.InvoiceDocuments(InvoiceId, CreatedDate, pdfDocument) 
+		   SELECT 3, @createdDate, BulkColumn
+		   FROM OPENROWSET(BULK N'C:\Users\...\PDFProject\Data\invoice_sample_3.pdf', SINGLE_BLOB) AS VARBINARY;
+
+		INSERT INTO Invoices.dbo.Invoices(CreatedDate, InvoicePeriodStart, InvoicePeriodEnd, DueDate, Description, DocumentExists)
+		   VALUES ( current_timestamp, '2023-04-03', '2023-04-10', '2023-04-25', 'No document exists.', 0);
+
+	
 
    	COMMIT TRANSACTION
    END TRY
@@ -37,14 +43,6 @@
      		', Line ' + CONVERT(varchar(5), ERROR_LINE())
      
    	PRINT ERROR_MESSAGE();
-     
-     	IF XACT_STATE() <> 0 BEGIN
-   		ROLLBACK TRANSACTION
-     	END
+    ROLLBACK TRANSACTION
+     	
    END CATCH;
-
-
-
-   --SELECT * FROM InvoicesDb.dbo.Invoices
-   --SELECT * FROM InvoiceDocumentsDb.dbo.InvoiceDocuments
-   

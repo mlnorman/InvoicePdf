@@ -13,8 +13,10 @@
             <h5 class="card-header">Invoice # @invoice.InvoiceId</h5>
             <div class="card-body">
                 <h5 class="card-title">@invoice.Description</h5>
-                <p class="card-text">Due Date: @invoice.DueDate.Date</p>
-                <p class="card-text">Period: @invoice.InvoicePeriodStart.Date - @invoice.InvoicePeriodEnd.Date</p>
+                <ul>
+                    <li>Period: @invoice.InvoicePeriodStart.ToShortDateString() - @invoice.InvoicePeriodEnd.ToShortDateString()</li>
+                    <li>Due Date: @invoice.DueDate.ToShortDateString()</li>
+                </ul>
                 @if(User.IsInRole("admin"))
                 {
                     @if (invoice.DocumentExists)

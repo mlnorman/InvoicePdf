@@ -5,13 +5,11 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to the Invoice PDF Project</h1>
     @if(!User.Identity.IsAuthenticated)
     {
-        <p>Please sign in to view invoices.</p>
-        <br />
+        <h1 class="display-4">Welcome to the Invoice PDF Project</h1>
     } else
     {
-        <p>Welcome, @User.Identity.Name </p>
+        <h1 class="display-4">Welcome to the Invoice PDF Project, @User.Identity.Name</h1>
     }
 </div>

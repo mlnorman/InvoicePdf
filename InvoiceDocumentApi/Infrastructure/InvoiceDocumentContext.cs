@@ -11,7 +11,7 @@ namespace InvoiceDocumentApi.Infrastructure
 {
     public class InvoiceDocumentContext : DbContext
     {
-        public InvoiceDocumentContext(){}
+        public InvoiceDocumentContext() { }
 
         public InvoiceDocumentContext(DbContextOptions<InvoiceDocumentContext> options) : base(options) { }
 

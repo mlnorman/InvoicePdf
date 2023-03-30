@@ -11,9 +11,11 @@ namespace InvoiceClient.Infrastructure
 {
     public class InvoiceContext : DbContext
     {
+        public InvoiceContext() { }
+
         public InvoiceContext(DbContextOptions<InvoiceContext> options) : base(options) { }
 
-        public DbSet<Invoice> Invoices { get; set; }
+        public virtual DbSet<Invoice> Invoices { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
