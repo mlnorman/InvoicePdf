@@ -43,7 +43,7 @@ namespace InvoiceClient
                 {
                     options.Authority = builder.Configuration.GetValue<string>("Oidc:Authority");
 
-                    options.ClientId = builder.Configuration.GetValue<string>("Oidc:InvoicePdfClient");
+                    options.ClientId = builder.Configuration.GetValue<string>("Oidc:ClientId");
 
                     // secrets should not be handled like this in production
                     // should be using something like Azure Key Vault

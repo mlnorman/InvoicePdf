@@ -11,9 +11,11 @@ namespace InvoiceDocumentApi.Infrastructure
 {
     public class InvoiceDocumentContext : DbContext
     {
+        public InvoiceDocumentContext(){}
+
         public InvoiceDocumentContext(DbContextOptions<InvoiceDocumentContext> options) : base(options) { }
 
-        public DbSet<InvoiceDocument> InvoiceDocuments { get; set; }
+        public virtual DbSet<InvoiceDocument> InvoiceDocuments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
