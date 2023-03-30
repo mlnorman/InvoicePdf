@@ -1,0 +1,17 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Invoice PDF Project";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to the Invoice PDF Project</h1>
+    @if(!User.Identity.IsAuthenticated)
+    {
+        <p>Please sign in to view invoices.</p>
+        <br />
+    } else
+    {
+        <p>Welcome, @User.Identity.Name </p>
+    }
+</div>

@@ -1,0 +1,37 @@
+﻿@page "{handler?}/{id?}"
+
+@using Microsoft.AspNetCore.Authentication
+@model InvoicesModel
+
+@if (Model.Invoices.Count > 0)
+{
+    <h3>Invoices</h3>
+    @foreach(var invoice in Model.Invoices)
+    {
+        
+        <div class="card m-3">
+            <h5 class="card-header">Invoice # @invoice.InvoiceId</h5>
+            <div class="card-body">
+                <h5 class="card-title">@invoice.Description</h5>
+                <p class="card-text">Due Date: @invoice.DueDate.Date</p>
+                <p class="card-text">Period: @invoice.InvoicePeriodStart.Date - @invoice.InvoicePeriodEnd.Date</p>
+                @if(User.IsInRole("admin"))
+                {
+                    @if (invoice.DocumentExists)
+                    {
+                        <a href="@Url.Page("Invoices", "Download", new {invoice.InvoiceId})" ><button class="btn btn-primary">Download</button></a>
+                    } else
+                    {
+                        <p class="fw-bold">No document exists.</p>
+                    }
+                }
+            </div>
+            <div class="card-footer text-muted">
+                Created @invoice.CreatedDate
+            </div>
+        </div>
+    }
+    
+} else {
+    <h3>No invoices exist.</h3>
+}
