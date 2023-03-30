@@ -31,6 +31,8 @@ Both client and api are protected by Identity Server, so a valid access token is
 # How to run
 **It is recommened to have .Net 7 as well as the latest dotnet EF Core tool installed**
 
+**Project was written with the assumption SQL Server would be used.  I did not test again any other databases.**
+
 1. Update the DefaultConnection connection string, setting the "Server" value.  Leave the database names the same for seed data to work without modifications.
 * `./InvoicePdf/InvoiceClient/appsettings.Development.json`
 * `./InvoicePdf/InvoiceDocumentApi/appsettings.Development.json`
