@@ -5,6 +5,7 @@ Contains the following projects
 * Duende Identiy Server project for the application IDP.
 * ASP.NET Core Razor Pages project for the application client.  Used Razor Pages since I am not too familiar with it and wanted to try it out.
 * ASP.NET Core Web Api for the document api.
+* Testing Project
 
 
 ### How it works
@@ -15,7 +16,7 @@ User is required to log in to view invoices.  Using OIDC the client will authent
 
 Invoices and Invoice Documents are stored in 2 separate database.  The razor pages client will pull invoices from the Invoices database.
 
-When the download button id clicked for an invoice an API request is made to the api project and the file is returned from the InvoiceDocuments database.
+When the download button is clicked for an invoice, an API request is made to the api project and the file is returned from the InvoiceDocuments database.
 
 Assumptions were made that invoice numbers are unique, so an identity was used when inserting into the database.
 
@@ -23,7 +24,7 @@ The InvoiceDocuments table has a trigger that will set a bit on the Invoices tab
 
 This bit is used to determine whether or not to show a "Download" button on the invoice in the razor pages client.  If a document does not exist, no reason to show a download button.
 
-When the download button is clicked a file exporer will open so the file can be saved.
+When the download button is clicked a file explorer will open so the file can be saved.
 
 Both client and api are protected by Identity Server, so a valid access token is necessary to make a call to the api.
 
@@ -31,14 +32,14 @@ Both client and api are protected by Identity Server, so a valid access token is
 **It is recommened to have .Net 7 as well as the latest dotnet EF Core tool installed**
 
 1. Update the DefaultConnection connection string, setting the "Server" value.  Leave the database names the same for seed data to work without modifications.
-* ./InvoicePdf/InvoiceClient/appsettings.Development.json
-* ./InvoicePdf/InvoiceDocumentApi/appsettings.Development.json
+* `./InvoicePdf/InvoiceClient/appsettings.Development.json`
+* `./InvoicePdf/InvoiceDocumentApi/appsettings.Development.json`
 
 2. Build project.
 * `cd InvoicePdf`
 * `dotnet build`
 
-3. Run migrations in this order.  Ensured no errors from creating the InvoiceDocuments trigger.
+3. Run migrations in this order.  It will ensure no errors from creating the InvoiceDocuments trigger.
 * `cd InvoiceClient`
 * `dotnet ef database update`
 * `cd ../InvoiceDocumentApi`
