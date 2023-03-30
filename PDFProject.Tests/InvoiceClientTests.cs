@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using MockQueryable.Moq;
 using Moq;
@@ -32,7 +33,9 @@ namespace PDFProject.Tests
 
             var configMock = new Mock<IConfiguration>();
 
-            InvoiceService service = new(contextMock.Object, configMock.Object);
+            var loggerMock = new Mock<ILogger<InvoiceService>>();
+
+            InvoiceService service = new(contextMock.Object, configMock.Object, loggerMock.Object);
 
             InvoicesModel model = new(service);
             await model.OnGetAsync();
@@ -49,7 +52,9 @@ namespace PDFProject.Tests
 
             var configMock = new Mock<IConfiguration>();
 
-            InvoiceService service = new(contextMock.Object, configMock.Object);
+            var loggerMock = new Mock<ILogger<InvoiceService>>();
+
+            InvoiceService service = new(contextMock.Object, configMock.Object, loggerMock.Object);
 
             var invoices = await service.GetAllInvoices();
 

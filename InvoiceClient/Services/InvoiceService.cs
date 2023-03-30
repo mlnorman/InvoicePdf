@@ -16,11 +16,13 @@ namespace InvoiceClient.Services
     {
         private readonly InvoiceContext _context;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<InvoiceService> _logger;
 
-        public InvoiceService(InvoiceContext context, IConfiguration configuration)
+        public InvoiceService(InvoiceContext context, IConfiguration configuration, ILogger<InvoiceService> logger)
         {
             _context = context;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public async Task<List<Invoice>> GetAllInvoices()
@@ -34,11 +36,20 @@ namespace InvoiceClient.Services
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = 
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+            try
+            {
+                var content = await client.
+                GetByteArrayAsync($"{_configuration.GetValue<string>("InvoiceApiPath")}{invoiceId}");
 
-            var content = await client.
-                GetByteArrayAsync( $"{_configuration.GetValue<string>("InvoiceApiPath").ToString()}{invoiceId}");
-            
-            return content;
+                return content;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error getting document from API call {Environment.NewLine}{ex.Message}");
+                throw;
+            }
+
         }
     }
 }
